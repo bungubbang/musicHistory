@@ -1,77 +1,36 @@
 package com.fevi.music.top100.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.Date;
 
 /**
  * Created by 1000742
  * Email: sungyong.jung@sk.com
- * Date: 15. 7. 3.
+ * Date: 15. 7. 6.
  */
 @Entity
-public class MusicRankInfo {
+public class SongRank {
 
     @Id
-    private Long id;
-
-    private Integer year;
-    private Integer month;
-
-    private Integer rank;
+    private Long rank;
 
     private Long songId;
     private String songName;
 
     private Long singerId;
     private String singer;
-    private String singerImage;
 
     private Long albumId;
     private String album;
     private String albumImage;
 
-    private String trimSong;
-    private String trimSinger;
-
     private Long score;
 
-    private Integer rankDate;
-
-
-    public MusicRankInfo() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    public Integer getMonth() {
-        return month;
-    }
-
-    public void setMonth(Integer month) {
-        this.month = month;
-    }
-
-    public Integer getRank() {
+    public Long getRank() {
         return rank;
     }
 
-    public void setRank(Integer rank) {
+    public void setRank(Long rank) {
         this.rank = rank;
     }
 
@@ -131,38 +90,6 @@ public class MusicRankInfo {
         this.score = score;
     }
 
-    public String getTrimSong() {
-        return trimSong;
-    }
-
-    public void setTrimSong(String trimSong) {
-        this.trimSong = trimSong;
-    }
-
-    public String getTrimSinger() {
-        return trimSinger;
-    }
-
-    public void setTrimSinger(String trimSinger) {
-        this.trimSinger = trimSinger;
-    }
-
-    public Integer getRankDate() {
-        return rankDate;
-    }
-
-    public void setRankDate(Integer rankDate) {
-        this.rankDate = rankDate;
-    }
-
-    public String getSingerImage() {
-        return singerImage;
-    }
-
-    public void setSingerImage(String singerImage) {
-        this.singerImage = singerImage;
-    }
-
     public String getAlbumImage() {
         return albumImage;
     }
@@ -173,23 +100,15 @@ public class MusicRankInfo {
 
     @Override
     public String toString() {
-        return "MusicRankInfo{" +
-                "id=" + id +
-                ", year=" + year +
-                ", month=" + month +
-                ", rank=" + rank +
+        return "SongRank{" +
+                "rank=" + rank +
                 ", songId=" + songId +
                 ", songName='" + songName + '\'' +
                 ", singerId=" + singerId +
                 ", singer='" + singer + '\'' +
-                ", singerImage='" + singerImage + '\'' +
                 ", albumId=" + albumId +
                 ", album='" + album + '\'' +
-                ", albumImage='" + albumImage + '\'' +
-                ", trimSong='" + trimSong + '\'' +
-                ", trimSinger='" + trimSinger + '\'' +
                 ", score=" + score +
-                ", rankDate=" + rankDate +
                 '}';
     }
 }

@@ -1,17 +1,21 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven { url "http://repo.spring.io/snapshot" }
+        maven { url "http://repo.spring.io/milestone" }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
-        classpath("io.spring.gradle:dependency-management-plugin:0.5.1.RELEASE")
     }
+}
+
+plugins {
+    id 'net.eikehirsch.react' version '0.3.1'
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'spring-boot' 
-apply plugin: 'io.spring.dependency-management' 
+apply plugin: 'spring-boot'
 apply plugin: 'war'
 
 
@@ -24,6 +28,8 @@ targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    maven { url "http://repo.spring.io/snapshot" }
+    maven { url "http://repo.spring.io/milestone" }
 }
 
 configurations {
@@ -34,15 +40,25 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter")
     compile("org.springframework.boot:spring-boot-starter-actuator")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
-//    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.jsoup:jsoup:$jsoupVersion")
+    compile("org.webjars:react:$reactWebJarsVersion")
+    compile("org.webjars:handlebars:$handlebarsWebJarsVersion")
+    compile("com.google.guava:guava:18.0")
+
     runtime("mysql:mysql-connector-java")
+
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
-    testCompile("org.springframework.boot:spring-boot-starter-test") 
+    testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
+jsx {
+    sourcesDir = 'src/main/resources/static/jsx'
+    destDir    = 'src/main/resources/static/output'
+}
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
 }
+
+processResources.dependsOn('jsx')

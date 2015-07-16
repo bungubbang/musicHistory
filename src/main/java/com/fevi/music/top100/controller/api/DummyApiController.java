@@ -1,5 +1,6 @@
-package com.fevi.music.top100.controller;
+package com.fevi.music.top100.controller.api;
 
+import com.fevi.music.top100.repository.SongRankRepository;
 import com.fevi.music.top100.service.MelonMusicHistoryParse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -7,19 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 /**
  * Created by 1000742
  * Email: sungyong.jung@sk.com
- * Date: 15. 7. 3.
+ * Date: 15. 7. 16.
  */
 @RestController
-@RequestMapping("api")
-public class MusicApiController {
+@RequestMapping("dummy")
+public class DummyApiController {
 
     private static final Log logger = LogFactory.getLog(MusicApiController.class);
-    @Autowired
-    MelonMusicHistoryParse melonMusicHistoryParse;
+
+    @Autowired private MelonMusicHistoryParse melonMusicHistoryParse;
 
     @RequestMapping("insert")
     public String insert(String date) {
@@ -29,7 +29,7 @@ public class MusicApiController {
                 melonMusicHistoryParse.parse(date, String.format("%02d", i));
             }
         } else if(split.length == 2) {
-                melonMusicHistoryParse.parse(split[0], split[1]);
+            melonMusicHistoryParse.parse(split[0], split[1]);
         }
         return date;
     }
@@ -43,4 +43,5 @@ public class MusicApiController {
         }
         return "ok";
     }
+
 }

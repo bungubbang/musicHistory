@@ -28,12 +28,16 @@ public class MelonMusicHistoryParse {
 
     private static final Logger logger = LoggerFactory.getLogger(MelonMusicHistoryParse.class);
 
+    private static final String ALBUM_URL = "http://www.melon.com/album/detail.htm?albumId=";
+    private static final String ARTIST_URL = "http://www.melon.com/artist/timeline.htm?artistId=";
+    private static final String RANK_URL = "http://www.melon.com/chart/month/index.htm?idx=1&rankMonth=";
+
     @Autowired MusicRankInfoRepository musicRankInfoRepository;
 
     public List<MusicRankInfo> parse(String year, String month) {
         List<MusicRankInfo> musics = new ArrayList<>();
 
-        String melon = "http://www.melon.com/chart/month/index.htm?idx=1&rankMonth=" + year + month;
+        String melon = RANK_URL + year + month;
         try {
             Document document = Jsoup.connect(melon).get();
 
@@ -57,7 +61,7 @@ public class MelonMusicHistoryParse {
     }
 
 
-    private void mappingMusicInfo(List<MusicRankInfo> musics, Element element, String year, String month) {
+    private void mappingMusicInfo(List<MusicRankInfo> musics, Element element, String year, String month) throws IOException {
         MusicRankInfo musicRankInfo = new MusicRankInfo();
 
         // date
@@ -78,6 +82,8 @@ public class MelonMusicHistoryParse {
         musicRankInfo.setSinger(singer);
         musicRankInfo.setAlbum(album);
 
+
+
         // trim info
         musicRankInfo.setTrimSong(songName.replaceAll("\\s", "").toLowerCase());
         musicRankInfo.setTrimSinger(singer.replaceAll("\\s", "").toLowerCase());
@@ -87,15 +93,27 @@ public class MelonMusicHistoryParse {
         String songId = element.getElementsByClass("btn_icon_detail").get(0).attr("href").split("\'")[1];
         musicRankInfo.setSongId(Long.valueOf(songId));
 
+        String artistId = "";
         // Various Artists 때문에..
         if(a.size() > 2) {
-            String artistId = a.get(1).attr("href").split("\'")[1];
+            artistId = a.get(1).attr("href").split("\'")[1];
             musicRankInfo.setSingerId(Long.valueOf(artistId));
         }
 
         String albumId = wrap_song_info.getElementsByClass("rank03").get(0).getElementsByTag("a").get(0).attr("href").split("\'")[1];
         musicRankInfo.setAlbumId(Long.valueOf(albumId));
 
+
+        // image
+        Document document = Jsoup.connect(ALBUM_URL + albumId).get();
+        String albumImageUrl = document.getElementsByClass("wrap_dtl_album").get(0).getElementsByClass("thumb").get(0).getElementsByTag("span").get(1).getElementsByTag("img").attr("src");
+        musicRankInfo.setAlbumImage(albumImageUrl);
+
+        if(!artistId.isEmpty()) {
+            Document doc = Jsoup.connect(ARTIST_URL + artistId).get();
+            String artistImageUrl = doc.getElementById("artistImgArea").getElementsByTag("img").attr("src");
+            musicRankInfo.setSingerImage(artistImageUrl);
+        }
 
 
         musicRankInfo.setId(Long.valueOf(year + month + songId));
