@@ -6,6 +6,6 @@ var MusicList = React.createClass({
     var createItem = function(music, index) {
       return <Music music = {music} key = {music.rank}/>;
     };
-    return <ul>{this.props.musics.map(createItem)}</ul>;
+    return <ul className="music-ul">{this.props.musics.map(createItem)}</ul>;
   }
 });
