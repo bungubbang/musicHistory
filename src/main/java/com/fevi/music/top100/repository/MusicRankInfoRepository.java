@@ -1,6 +1,5 @@
 package com.fevi.music.top100.repository;
 
-import com.fevi.music.top100.controller.view.MusicRank;
 import com.fevi.music.top100.domain.MusicRankInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

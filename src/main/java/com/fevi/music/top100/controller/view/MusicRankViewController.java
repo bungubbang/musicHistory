@@ -10,6 +10,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * Created by 1000742
@@ -17,9 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Date: 15. 7. 10.
  */
 @Controller
-public class MusicRank {
+public class MusicRankViewController {
 
     @Autowired private SongRankRepository songRankRepository;
+    @Autowired private MusicRankInfoRepository musicRankInfoRepository;
 
     @RequestMapping("/")
     public String index(Model model) {
@@ -28,4 +32,17 @@ public class MusicRank {
         model.addAttribute("title", "music");
         return "index";
     }
+
+    @RequestMapping("/song")
+    public String songDetail(@RequestParam Long songId, Model model) {
+        List<MusicRankInfo> songs = musicRankInfoRepository.findBySongId(songId);
+        if(songs.isEmpty()) {
+            return "404";
+        }
+        model.addAttribute("title", songs.get(0).getSongName());
+        model.addAttribute("sum", songs.stream().mapToLong(MusicRankInfo::getScore).sum());
+        model.addAttribute("songs", songs);
+        return "songDetail";
+    }
+
 }

@@ -9,7 +9,7 @@ var MusicApp = React.createClass({
   addItems: function(event) {
     var that = this;
     if(!this.state.last) {
-      $.getJSON('/api/song?size=1000&page=' + (this.state.page + 1) , function( data ) {
+      $.getJSON('/api/song?size=100&page=' + (this.state.page + 1) , function( data ) {
         that.setState({
           musics: that.state.musics.concat(data.content),
           page : data.number,
@@ -21,10 +21,10 @@ var MusicApp = React.createClass({
   render: function () {
     return(
       <div>
-        <div className="row">
+        <div>
           <MusicList musics={ this.state.musics }/>
         </div>
-        <div className="row">
+        <div>
           <MusicMoreButton addItems={this.addItems}/>
         </div>
       </div>
