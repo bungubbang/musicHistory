@@ -23,7 +23,7 @@
                 <div class="col-sm-2 col-md3"></div>
                 <!-- Content goes here -->
                 <div class="col-sm-8 col-md6">
-                    <div class="block-flat profile-info">
+                    <div class="block-flat profile-info" style="margin-bottom: 10px;">
                         <div class="row">
                             <div class="col-sm-2">
                                 <div class="avatar">
@@ -32,7 +32,7 @@
                             </div>
                             <div class="col-sm-7">
                                 <div class="personal">
-                                    <h1 class="name"><%= songs[0].singer %></h1>
+                                    <h1 class="name"><%= songs[0].songName %></h1>
                                     <p class="description"><%= songs[0].album %></p>
                                     <p><%= songs[0].singer %></p>
                                 </div>
@@ -40,6 +40,21 @@
                             <div class="col-sm-3">
                                 <h1 class="big-text"><%= sum %></h1>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-md3"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-md3"></div>
+                <!-- Content goes here -->
+                <div class="col-sm-8 col-md6">
+                    <div class="block-flat">
+                        <div class="header">
+                            <h3>Song Score Date</h3>
+                        </div>
+                        <div class="content">
+                            <div id="score_chart" style="height: 300px; padding: 0px; position: relative;"></div>
                         </div>
                     </div>
                 </div>
@@ -54,5 +69,50 @@
 <script src="webjars/react/0.13.3/react.js"></script>
 <script src="webjars/react/0.13.3/JSXTransformer.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/1.4.5/numeral.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript">
+    var graphApiUrl = "http://localhost:8080/api/graph?songId=" + '<%= songs[0].songId %>';
+    $.getJSON(graphApiUrl, function(data) {
+        drawChart(data);
+    });
+
+
+    var drawChart = function(data) {
+        $('#score_chart').highcharts({
+            title: {
+                text: '<%= songs[0].songName %>',
+                x: -20 //center
+            },
+            xAxis: {
+                categories: data.keys
+            },
+            yAxis: {
+                title: {
+                    text: 'Melon Rank'
+                },
+                max: 100,
+                min: 1,
+                tickInterval: 20,
+                reversed: true,
+                reversedStacks: false,
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+            tooltip: {
+                valueSuffix: '위'
+            },
+            series: data.values
+        });
+    };
+</script>
 </body>
 </html>

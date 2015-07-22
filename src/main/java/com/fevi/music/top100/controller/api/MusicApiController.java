@@ -1,14 +1,12 @@
 package com.fevi.music.top100.controller.api;
 
-import com.fevi.music.top100.domain.AlbumRank;
-import com.fevi.music.top100.domain.MusicRankInfo;
-import com.fevi.music.top100.domain.SingerRank;
-import com.fevi.music.top100.domain.SongRank;
+import com.fevi.music.top100.domain.*;
 import com.fevi.music.top100.repository.AlbumRankRepository;
 import com.fevi.music.top100.repository.MusicRankInfoRepository;
 import com.fevi.music.top100.repository.SingerRankRepository;
 import com.fevi.music.top100.repository.SongRankRepository;
 import com.fevi.music.top100.service.MelonMusicHistoryParse;
+import com.fevi.music.top100.service.MusicInfoService;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Longs;
@@ -40,6 +38,8 @@ public class MusicApiController {
     @Autowired private AlbumRankRepository albumRankRepository;
     @Autowired private MusicRankInfoRepository musicRankInfoRepository;
 
+    @Autowired private MusicInfoService musicInfoService;
+
 
     @RequestMapping(value = "song", produces = "application/json", method = RequestMethod.GET)
     public Page<SongRank> songRanks(Pageable pageable) {
@@ -60,21 +60,23 @@ public class MusicApiController {
     }
 
 
-    @RequestMapping(value = "search", produces = "application/json", method = RequestMethod.GET)
-    public List<MusicRankInfo> searchDetail(@RequestParam Optional<Long> songId,
+    @RequestMapping(value = "graph", produces = "application/json", method = RequestMethod.GET)
+    public GraphData getGraphData(@RequestParam Optional<Long> songId,
                                           @RequestParam Optional<Long> singerId,
                                           @RequestParam Optional<Long> albumId) {
 
         logger.debug("path = search, songId = [" + songId + "], singerId = [" + singerId + "], albumId = [" + albumId + "]");
 
         if(songId.isPresent()) {
-            return musicRankInfoRepository.findBySongId(songId.get());
+            return musicInfoService.getSongGraphData(songId.get());
         }else if(singerId.isPresent()) {
-            return musicRankInfoRepository.findBySingerId(singerId.get());
+
         }else if(albumId.isPresent()) {
-            return musicRankInfoRepository.findByAlbumId(albumId.get());
+
         }
 
-        return Lists.newArrayList();
+        return null;
     }
+
+
 }

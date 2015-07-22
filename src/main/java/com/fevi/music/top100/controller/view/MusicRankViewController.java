@@ -4,6 +4,7 @@ import com.fevi.music.top100.domain.MusicRankInfo;
 import com.fevi.music.top100.domain.SongRank;
 import com.fevi.music.top100.repository.MusicRankInfoRepository;
 import com.fevi.music.top100.repository.SongRankRepository;
+import com.fevi.music.top100.service.MusicInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +26,8 @@ public class MusicRankViewController {
     @Autowired private SongRankRepository songRankRepository;
     @Autowired private MusicRankInfoRepository musicRankInfoRepository;
 
+    @Autowired private MusicInfoService musicInfoService;
+
     @RequestMapping("/")
     public String index(Model model) {
         Page<SongRank> songRankPage = songRankRepository.findAll(new PageRequest(0, 100));
@@ -41,6 +44,7 @@ public class MusicRankViewController {
         }
         model.addAttribute("title", songs.get(0).getSongName());
         model.addAttribute("sum", songs.stream().mapToLong(MusicRankInfo::getScore).sum());
+
         model.addAttribute("songs", songs);
         return "songDetail";
     }
