@@ -1,6 +1,7 @@
 var Music = React.createClass({
+
   handleClick: function(event) {
-    console.log('click!');
+    location.href="/song?songId=" + this.props.music.songId;
   },
   render: function () {
     var formatScore = numeral(this.props.music.score).format('0,0');
