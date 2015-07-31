@@ -1,7 +1,3 @@
-$.getJSON('/api/song?size=100&page=0', function( data ) {
-  React.render(<MusicApp data={ data }/>, document.getElementById("music-list"));
-});
-
 Kakao.init('62bdc0a1476d4bd8afeeb6883af27f82');
 
 var shareStory = function() {
@@ -14,7 +10,7 @@ var windowHeight = 360;
 var windowWidth = 640;
 
 var shareFacebook = function() {
-  var REDIRECT_URL = "http://fe-vi.com";
+  var REDIRECT_URL = location.href;
   var facebookUrl = "https://www.facebook.com/dialog/share?app_id=804185619702959&display=popup&href=" + REDIRECT_URL  + "&redirect_uri=" + REDIRECT_URL;
   window.open(facebookUrl, "_blank", "height=" + windowHeight + ",width=" + windowWidth);
 };

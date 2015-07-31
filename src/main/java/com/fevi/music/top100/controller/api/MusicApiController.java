@@ -17,8 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 /**
@@ -61,21 +60,42 @@ public class MusicApiController {
 
 
     @RequestMapping(value = "graph", produces = "application/json", method = RequestMethod.GET)
-    public GraphData getGraphData(@RequestParam Optional<Long> songId,
-                                          @RequestParam Optional<Long> singerId,
-                                          @RequestParam Optional<Long> albumId) {
+    public GraphData getGraphData(@RequestParam Optional<Long> songId) {
 
-        logger.debug("path = search, songId = [" + songId + "], singerId = [" + singerId + "], albumId = [" + albumId + "]");
+        logger.debug("path = search, songId = [" + songId + "]");
 
         if(songId.isPresent()) {
             return musicInfoService.getSongGraphData(songId.get());
-        }else if(singerId.isPresent()) {
-
-        }else if(albumId.isPresent()) {
-
         }
 
         return null;
+    }
+
+    @RequestMapping(value = "graph", produces = "application/json", method = RequestMethod.GET)
+    public List<GraphData> getGraphDataList(
+                                  @RequestParam Optional<Long> singerId,
+                                  @RequestParam Optional<Long> albumId) {
+
+        logger.debug("path = search, singerId = [" + singerId + "], albumId = [" + albumId + "]");
+
+        List<GraphData> graphDatas = new ArrayList<>();
+        List<MusicRankInfo> musicInfos = new ArrayList<>();
+        Set<Long> songIds = new HashSet<>();
+        if(singerId.isPresent()) {
+            musicInfos = musicRankInfoRepository.findBySingerId(singerId.get());
+        }else if(albumId.isPresent()) {
+            musicInfos = musicRankInfoRepository.findByAlbumId(albumId.get());
+        }
+
+        for (MusicRankInfo musicInfo : musicInfos) {
+            songIds.add(musicInfo.getSongId());
+        }
+
+        for (Long songId : songIds) {
+            graphDatas.add(musicInfoService.getSongGraphData(songId));
+        }
+
+        return graphDatas;
     }
 
 
