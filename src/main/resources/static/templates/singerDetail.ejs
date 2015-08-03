@@ -29,14 +29,12 @@
                         <div class="row">
                             <div class="col-sm-2">
                                 <div class="avatar">
-                                    <img src='<%= songs[0].albumImage %>' class="profile-avatar">
+                                    <img src='<%= songs[0].singerImage %>' class="profile-avatar">
                                 </div>
                             </div>
                             <div class="col-sm-7">
                                 <div class="personal">
-                                    <h1 class="name"><%= songs[0].songName %></h1>
-                                    <p class="description"><%= songs[0].album %></p>
-                                    <p><%= songs[0].singer %></p>
+                                    <h1 class="name"><%= songs[0].singer %></h1>
                                 </div>
                             </div>
                             <div class="col-sm-3">
@@ -122,7 +120,7 @@
     });
 
 
-    var graphApiUrl = "//" + location.host + "/api/graph?songId=" + '<%= songs[0].songId %>';
+    var graphApiUrl = "//" + location.host + "/api/graph?singerId=" + '<%= songs[0].singerId %>';
     $.getJSON(graphApiUrl, function(data) {
         drawChart(data);
     });

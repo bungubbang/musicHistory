@@ -26,6 +26,16 @@ public class MusicRankInfoService implements MusicInfoService {
         return generateGraphData(musicRankInfoRepository.findBySongId(songId));
     }
 
+    @Override
+    public GraphData getSingerGraphData(Long singerId) {
+        return generateGraphData(musicRankInfoRepository.findBySingerId(singerId));
+    }
+
+    @Override
+    public GraphData getAlbumGraphData(Long albumId) {
+        return generateGraphData(musicRankInfoRepository.findByAlbumId(albumId));
+    }
+
     private GraphData generateGraphData(List<MusicRankInfo> infos) {
 
         IntSummaryStatistics intSummaryStatistics = infos.stream().mapToInt(MusicRankInfo::getRankDate).summaryStatistics();

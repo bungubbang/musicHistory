@@ -1,7 +1,7 @@
 var Singer = React.createClass({
 
   handleClick: function(event) {
-    location.href="/singer?Id=" + this.props.singer.singerId;
+    location.href="/singer/" + this.props.singer.singerId;
   },
   render: function () {
     var formatScore = numeral(this.props.singer.score).format('0,0');

@@ -60,43 +60,21 @@ public class MusicApiController {
 
 
     @RequestMapping(value = "graph", produces = "application/json", method = RequestMethod.GET)
-    public GraphData getGraphData(@RequestParam Optional<Long> songId) {
+    public GraphData getGraphData(@RequestParam Optional<Long> songId,
+                                  @RequestParam Optional<Long> singerId,
+                                  @RequestParam Optional<Long> albumId) {
 
-        logger.debug("path = search, songId = [" + songId + "]");
+        System.out.println("path = graph, songId = [" + songId + "], singerId = [" + singerId + "], albumId = [" + albumId + "]");
 
         if(songId.isPresent()) {
             return musicInfoService.getSongGraphData(songId.get());
+        }else if(albumId.isPresent()) {
+            return musicInfoService.getAlbumGraphData(albumId.get());
+        }else if(singerId.isPresent()) {
+            return musicInfoService.getSingerGraphData(singerId.get());
         }
 
         return null;
     }
-
-    @RequestMapping(value = "graph", produces = "application/json", method = RequestMethod.GET)
-    public List<GraphData> getGraphDataList(
-                                  @RequestParam Optional<Long> singerId,
-                                  @RequestParam Optional<Long> albumId) {
-
-        logger.debug("path = search, singerId = [" + singerId + "], albumId = [" + albumId + "]");
-
-        List<GraphData> graphDatas = new ArrayList<>();
-        List<MusicRankInfo> musicInfos = new ArrayList<>();
-        Set<Long> songIds = new HashSet<>();
-        if(singerId.isPresent()) {
-            musicInfos = musicRankInfoRepository.findBySingerId(singerId.get());
-        }else if(albumId.isPresent()) {
-            musicInfos = musicRankInfoRepository.findByAlbumId(albumId.get());
-        }
-
-        for (MusicRankInfo musicInfo : musicInfos) {
-            songIds.add(musicInfo.getSongId());
-        }
-
-        for (Long songId : songIds) {
-            graphDatas.add(musicInfoService.getSongGraphData(songId));
-        }
-
-        return graphDatas;
-    }
-
 
 }

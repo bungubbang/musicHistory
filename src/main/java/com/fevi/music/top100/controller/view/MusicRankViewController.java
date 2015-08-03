@@ -12,8 +12,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -32,15 +34,20 @@ public class MusicRankViewController {
     @Autowired private MusicInfoService musicInfoService;
 
     @RequestMapping("/")
-    public String index(Model model) {
-        Page<SongRank> songRankPage = songRankRepository.findAll(new PageRequest(0, 100));
-        model.addAttribute("musics", songRankPage.getContent());
-        model.addAttribute("title", "Music");
-        return "index";
+    public ModelAndView index() {
+        return new ModelAndView("redirect:/song");
     }
 
     @RequestMapping("/song")
-    public String songDetail(@RequestParam Long songId, Model model) {
+    public String songPage(Model model) {
+        Page<SongRank> songRankPage = songRankRepository.findAll(new PageRequest(0, 100));
+        model.addAttribute("musics", songRankPage.getContent());
+        model.addAttribute("title", "Music");
+        return "song";
+    }
+
+    @RequestMapping("/song/{songId}")
+    public String songDetail(@PathVariable Long songId, Model model) {
         List<MusicRankInfo> songs = musicRankInfoRepository.findBySongId(songId);
         if(songs.isEmpty()) {
             return "404";
@@ -52,15 +59,14 @@ public class MusicRankViewController {
         return "songDetail";
     }
 
-    @RequestMapping("/singers")
+    @RequestMapping("/singer")
     public String songDetail(Model model) {
         model.addAttribute("title", "Singer");
-
         return "singers";
     }
 
-    @RequestMapping("/song")
-    public String singerDetail(@RequestParam Long singerId, Model model) {
+    @RequestMapping("/singer/{singerId}")
+    public String singerDetail(@PathVariable Long singerId, Model model) {
         List<MusicRankInfo> songs = musicRankInfoRepository.findBySingerId(singerId);
         if(songs.isEmpty()) {
             return "404";
@@ -69,7 +75,12 @@ public class MusicRankViewController {
         model.addAttribute("sum", songs.stream().mapToLong(MusicRankInfo::getScore).sum());
 
         model.addAttribute("songs", songs);
-        return "songDetail";
+        return "singerDetail";
     }
 
+    @RequestMapping("/album")
+    public String album(Model model) {
+        model.addAttribute("title", "Album");
+        return "album";
+    }
 }

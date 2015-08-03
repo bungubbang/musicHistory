@@ -7,4 +7,6 @@ import com.fevi.music.top100.domain.GraphData;
  */
 public interface MusicInfoService {
     public GraphData getSongGraphData(Long songId);
+    public GraphData getSingerGraphData(Long songId);
+    public GraphData getAlbumGraphData(Long songId);
 }
