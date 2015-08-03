@@ -1,7 +1,7 @@
 var Album = React.createClass({
 
   handleClick: function(event) {
-    location.href="/album/" + this.props.album.singerId;
+    location.href="/album/" + this.props.album.albumId;
   },
   render: function () {
     var formatScore = numeral(this.props.album.score).format('0,0');
