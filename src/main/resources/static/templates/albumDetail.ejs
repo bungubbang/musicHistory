@@ -27,8 +27,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="personal">
-                                    <h1 class="name"><%= songs[0].songName %></h1>
-                                    <p class="description"><%= songs[0].album %></p>
+                                    <h1 class="name"><%= songs[0].album %></h1>
                                     <p><%= songs[0].singer %></p>
                                 </div>
                             </div>
@@ -67,7 +66,7 @@
                             <h3>Song Score Date</h3>
                         </div>
                         <div class="content">
-                            <div id="score_chart" style="height: 300px; padding: 0px; position: relative;"></div>
+                            <div id="score_chart" style="height: 300px; padding: 0; position: relative;"></div>
                         </div>
                     </div>
                 </div>
@@ -106,7 +105,7 @@
     });
 
 
-    var graphApiUrl = "//" + location.host + "/api/graph?songId=" + '<%= songs[0].songId %>';
+    var graphApiUrl = "//" + location.host + "/api/graph?albumId=" + '<%= songs[0].albumId %>';
     $.getJSON(graphApiUrl, function(data) {
         drawChart(data);
     });
@@ -115,7 +114,7 @@
     var drawChart = function(data) {
         $('#score_chart').highcharts({
             title: {
-                text: '<%= songs[0].songName %>',
+                text: '<%= songs[0].album %>',
                 x: -20 //center
             },
             xAxis: {
@@ -149,5 +148,6 @@
         });
     };
 </script>
+
 </body>
 </html>

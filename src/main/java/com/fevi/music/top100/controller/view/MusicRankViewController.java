@@ -83,4 +83,17 @@ public class MusicRankViewController {
         model.addAttribute("title", "Album");
         return "album";
     }
+
+    @RequestMapping("/album/{albumId}")
+    public String albumDetail(@PathVariable Long albumId, Model model) {
+        List<MusicRankInfo> songs = musicRankInfoRepository.findByAlbumId(albumId);
+        if(songs.isEmpty()) {
+            return "404";
+        }
+        model.addAttribute("title", songs.get(0).getAlbum());
+        model.addAttribute("sum", songs.stream().mapToLong(MusicRankInfo::getScore).sum());
+
+        model.addAttribute("songs", songs);
+        return "albumDetail";
+    }
 }
