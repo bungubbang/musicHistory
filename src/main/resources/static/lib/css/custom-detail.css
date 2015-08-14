@@ -9,3 +9,15 @@
     min-width: 900px;
     width: 60%;
 }
+
+.title-div {
+    padding: 50px 30px 10px 30px;
+}
+
+.title-div > h3{
+    margin-top: -10px;
+}
+
+.title-menu {
+    margin-left: 25px;
+}

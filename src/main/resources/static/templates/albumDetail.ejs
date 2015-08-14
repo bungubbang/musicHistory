@@ -1,21 +1,41 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="description" content="">
-    <meta name="author" content="">
+
+    <meta property="og:type"               content="music.song" />
+    <meta property="og:title"              content="<%= songs[0].album %>(10년간 가장 사랑받은 앨범)" />
+    <meta property="og:image"              content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" />
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700,800' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Raleway:300,200,100' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="../lib/css/clean-zone-style.css"/>
     <link rel="stylesheet" href="../lib/css/custom-detail.css"/>
-    <title><%= title %></title>
+    <title><%= songs[0].album %>(10년간 가장 사랑받은 앨범)</title>
 </head>
 <body style="opacity: 1; margin-left: 0px;">
 <div id="fb-root"></div>
 <div id="cl-wrapper">
     <div class="container-fluid" id="pcont">
         <div class="cl-mcont">
+            <div class="row">
+                <div class="center-block detail-div">
+                    <div class="block-flat profile-info" style="margin-bottom: 10px;">
+                        <div class="row title-div">
+                            <h1>The Best Album for Decade</h1>
+                            <h3>10년간 가장 사랑받은 앨범</h3>
+                            <div class="text-center">
+                                <ul class="list-inline">
+                                    <li><a href="/song"><h3>#음악</h3></a></li>
+                                    <li class="title-menu"><a href="/album"><h3>#앨범</h3></a></li>
+                                    <li class="title-menu"><a href="/singer"><h3>#가수</h3></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="center-block detail-div">
                     <div class="block-flat profile-info" style="margin-bottom: 10px;">
@@ -114,7 +134,7 @@
     var drawChart = function(data) {
         $('#score_chart').highcharts({
             title: {
-                text: '<%= songs[0].album %>',
+                text: "<%= songs[0].album %>",
                 x: -20 //center
             },
             xAxis: {
@@ -147,6 +167,16 @@
             series: data.values
         });
     };
+</script>
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-39699634-5', 'auto');
+    ga('send', 'pageview');
+
 </script>
 
 </body>
