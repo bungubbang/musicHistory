@@ -5,6 +5,15 @@
     border-radius: 50px;
 }
 
+.profile-title {
+    background-color: #46535F;
+    color: #fff;
+}
+
+.profile-title a {
+    color: #B4C9CF !important;
+}
+
 .detail-div {
     min-width: 900px;
     width: 60%;

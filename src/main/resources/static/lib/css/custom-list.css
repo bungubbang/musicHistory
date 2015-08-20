@@ -1,8 +1,8 @@
 .music-ul {
-    padding-left: 0px !important;
+    padding-left: 0 !important;
 }
 .music-li {
-    margin: 0px !important;
+    margin: 0 !important;
 }
 .music-album-image {
     width: 80px;
@@ -17,10 +17,8 @@
 }
 .title-text-div {
     border-bottom: 1px solid #e8e8e8;
-    background-color: #eee;
-}
-.share-div {
-    margin: 0 -15px -20px -15px !important;
+    background-color: #46535F;
+    color: #FFF8F0;
 }
 
 .title-div {

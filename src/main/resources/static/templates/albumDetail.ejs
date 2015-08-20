@@ -4,7 +4,8 @@
 
     <meta property="og:type"               content="music.song" />
     <meta property="og:title"              content="<%= songs[0].album %>(10년간 가장 사랑받은 앨범)" />
-    <meta property="og:image"              content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" />
+    <meta property="og:description"        content="<%= songs[0].singer %>" />
+    <meta property="og:image"              content="<%= songs[0].albumImage %>" />
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -21,7 +22,7 @@
         <div class="cl-mcont">
             <div class="row">
                 <div class="center-block detail-div">
-                    <div class="block-flat profile-info" style="margin-bottom: 10px;">
+                    <div class="block-flat profile-title" style="margin-bottom: 10px;">
                         <div class="row title-div">
                             <h1>The Best Album of the Decade</h1>
                             <h3>10년간 가장 사랑받은 앨범</h3>
