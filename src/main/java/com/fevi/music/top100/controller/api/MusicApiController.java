@@ -41,19 +41,31 @@ public class MusicApiController {
 
 
     @RequestMapping(value = "song", produces = "application/json", method = RequestMethod.GET)
-    public Page<SongRank> songRanks(Pageable pageable) {
+    public Page<SongRank> songRanks(Pageable pageable, @RequestParam Optional<String> name) {
+        if(name.isPresent()) {
+            logger.debug("path = song, pageable = [" + pageable + "], search = " + name.get());
+            return songRankRepository.findBySongNameLike("%" + name.get() + "%", pageable);
+        }
         logger.debug("path = song, pageable = [" + pageable + "]");
         return songRankRepository.findAll(pageable);
     }
 
     @RequestMapping(value = "singer", produces = "application/json", method = RequestMethod.GET)
-    public Page<SingerRank> singerRanks(Pageable pageable) {
+    public Page<SingerRank> singerRanks(Pageable pageable, @RequestParam Optional<String> name) {
+        if(name.isPresent()) {
+            logger.debug("path = singer, pageable = [" + pageable + "], search = " + name.get());
+            return singerRankRepository.findBySingerLike("%" + name.get() + "%", pageable);
+        }
         logger.debug("path = singer, pageable = [" + pageable + "]");
         return singerRankRepository.findAll(pageable);
     }
 
     @RequestMapping(value = "album", produces = "application/json", method = RequestMethod.GET)
-    public Page<AlbumRank> albumRanks(Pageable pageable) {
+    public Page<AlbumRank> albumRanks(Pageable pageable, @RequestParam Optional<String> name) {
+        if(name.isPresent()) {
+            logger.debug("path = albums, pageable = [" + pageable + "], search = " + name.get());
+            return albumRankRepository.findByAlbumLike("%" + name.get() + "%", pageable);
+        }
         logger.debug("path = albums, pageable = [" + pageable + "]");
         return albumRankRepository.findAll(pageable);
     }
@@ -76,5 +88,7 @@ public class MusicApiController {
 
         return null;
     }
+
+
 
 }
