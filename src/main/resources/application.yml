@@ -10,3 +10,12 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
   mvc:
     favicon.enabled: false
+
+---
+
+spring:
+    profiles: real
+    datasource:
+      url: jdbc:mysql://localhost:3306/musicdecade?useUnicode=true&connectionCollation=utf8_general_ci&characterSetResults=utf8&characterEncoding=utf8&?autoReconnect=true
+      username: musicdecade
+      driver-class-name: com.mysql.jdbc.Driver

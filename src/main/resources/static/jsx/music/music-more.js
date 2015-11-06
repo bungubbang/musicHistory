@@ -1,12 +1,4 @@
 var MusicMoreButton = React.createClass({
-  getInitialState: function () {
-    console.log(this.props.moreDisplay);
-    return {
-      style : {
-        display: this.props.moreDisplay
-      }
-    };
-  },
   handleClick: function(event) {
     this.props.addItems(event);
   },

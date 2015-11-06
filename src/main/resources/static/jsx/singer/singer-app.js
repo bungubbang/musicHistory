@@ -18,14 +18,28 @@ var SingerApp = React.createClass({
       });
     }
   },
+  doSearch:function(queryText){
+    var that = this;
+    $.getJSON('/api/singer?size=100&page=0&name=' + queryText, function( data ) {
+      that.setState({
+        singers: data.content,
+        page : data.number,
+        last : data.last,
+        moreDisplay: { display:'none'}
+      });
+    });
+  },
   render: function () {
     return(
       <div>
         <div>
+          <SearchBox doSearch={this.doSearch}/>
+        </div>
+        <div>
           <SingerList singers={ this.state.singers }/>
         </div>
         <div>
-          <MusicMoreButton addItems={this.addItems}/>
+          <MusicMoreButton addItems={this.addItems} moreDisplay={ this.state.moreDisplay }/>
         </div>
       </div>
     )
