@@ -9,6 +9,7 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -34,6 +35,8 @@ public class MelonMusicHistoryParse {
 
     @Autowired MusicRankInfoRepository musicRankInfoRepository;
 
+    @Autowired JdbcTemplate jdbcTemplate;
+
     public List<MusicRankInfo> parse(String year, String month) {
         List<MusicRankInfo> musics = new ArrayList<>();
 
@@ -56,6 +59,14 @@ public class MelonMusicHistoryParse {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        jdbcTemplate.execute("TRUNCATE song_rank");
+        jdbcTemplate.execute("TRUNCATE singer_rank");
+        jdbcTemplate.execute("TRUNCATE album_rank");
+
+        jdbcTemplate.execute("insert into song_rank (album, album_id, album_image, score, singer, singer_id, song_id, song_name) SELECT album, album_id, album_image, sum(score) as score, singer, singer_id, song_id, song_name FROM musicHistory.music_rank_info group by song_id order by sum(score) desc");
+        jdbcTemplate.execute("insert into singer_rank (score, singer, singer_id, singer_image) SELECT sum(score) as score, singer, singer_id, singer_image FROM musicHistory.music_rank_info group by singer_id order by sum(score) desc");
+        jdbcTemplate.execute("insert into album_rank (album, album_id, album_image, score, singer, singer_id) SELECT album, album_id, album_image, sum(score) as score, singer, singer_id FROM musicHistory.music_rank_info group by album_id order by sum(score) desc");
 
         return musics;
     }
@@ -122,9 +133,12 @@ public class MelonMusicHistoryParse {
         double powLeverage = 3;
         musicRankInfo.setScore((long) Math.pow(rankPoint, powLeverage));
 
-        musicRankInfoRepository.save(musicRankInfo);
+        List<MusicRankInfo> bySongIdAndYearAndMonth = musicRankInfoRepository.findBySongIdAndYearAndMonth(musicRankInfo.getSongId(), musicRankInfo.getYear(), musicRankInfo.getMonth());
+        if(bySongIdAndYearAndMonth.isEmpty()) {
+            musicRankInfoRepository.save(musicRankInfo);
+            logger.debug("insert music rank : " + musicRankInfo);
+        }
 
-        logger.debug("insert music rank : " + musicRankInfo);
         musics.add(musicRankInfo);
     }
 

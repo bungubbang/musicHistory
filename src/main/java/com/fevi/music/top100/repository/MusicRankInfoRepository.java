@@ -18,4 +18,6 @@ public interface MusicRankInfoRepository extends JpaRepository<MusicRankInfo, Lo
     List<MusicRankInfo> findByAlbumId(Long albumId);
     List<MusicRankInfo> findBySingerId(Long singerId);
 
+    List<MusicRankInfo> findBySongIdAndYearAndMonth(Long songId, Integer year, Integer month);
+
 }
