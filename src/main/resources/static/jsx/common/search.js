@@ -1,7 +1,15 @@
 var SearchBox = React.createClass({
     getInitialState: function () {
-        $('.search-btn').click(function() {
+
+        var $searchBtn = $('.search-btn');
+        $searchBtn.click(function() {
             $('.react-search-btn').click();
+        });
+
+        $searchBtn.keyPress(function(key) {
+            if (key.keyCode == 13) {
+                $('.react-search-btn').click();
+            }
         });
 
 

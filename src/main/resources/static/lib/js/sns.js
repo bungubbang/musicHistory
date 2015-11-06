@@ -1,8 +1,9 @@
-Kakao.init('62bdc0a1476d4bd8afeeb6883af27f82');
+Kakao.init('648d878cd39286d21774486444811f60');
 
 var shareStory = function() {
   Kakao.Story.share({
-    url: location.href
+    url: location.href,
+    text: location.href
   });
 };
 

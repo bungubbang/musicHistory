@@ -29,9 +29,9 @@ public class MelonMusicHistoryParse {
 
     private static final Logger logger = LoggerFactory.getLogger(MelonMusicHistoryParse.class);
 
-    private static final String ALBUM_URL = "http://www.melon.com/album/detail.htm?albumId=";
-    private static final String ARTIST_URL = "http://www.melon.com/artist/timeline.htm?artistId=";
-    private static final String RANK_URL = "http://www.melon.com/chart/month/index.htm?idx=1&rankMonth=";
+    private static final String ALBUM_URL = "https://www.melon.com/album/detail.htm?albumId=";
+    private static final String ARTIST_URL = "https://www.melon.com/artist/timeline.htm?artistId=";
+    private static final String RANK_URL = "https://www.melon.com/chart/month/index.htm?idx=1&rankMonth=";
 
     @Autowired MusicRankInfoRepository musicRankInfoRepository;
 
@@ -64,9 +64,9 @@ public class MelonMusicHistoryParse {
         jdbcTemplate.execute("TRUNCATE singer_rank");
         jdbcTemplate.execute("TRUNCATE album_rank");
 
-        jdbcTemplate.execute("insert into song_rank (album, album_id, album_image, score, singer, singer_id, song_id, song_name) SELECT album, album_id, album_image, sum(score) as score, singer, singer_id, song_id, song_name FROM musicHistory.music_rank_info group by song_id order by sum(score) desc");
-        jdbcTemplate.execute("insert into singer_rank (score, singer, singer_id, singer_image) SELECT sum(score) as score, singer, singer_id, singer_image FROM musicHistory.music_rank_info group by singer_id order by sum(score) desc");
-        jdbcTemplate.execute("insert into album_rank (album, album_id, album_image, score, singer, singer_id) SELECT album, album_id, album_image, sum(score) as score, singer, singer_id FROM musicHistory.music_rank_info group by album_id order by sum(score) desc");
+        jdbcTemplate.execute("insert into song_rank (album, album_id, album_image, score, singer, singer_id, song_id, song_name) SELECT album, album_id, album_image, sum(score) as score, singer, singer_id, song_id, song_name FROM music_rank_info group by song_id order by sum(score) desc");
+        jdbcTemplate.execute("insert into singer_rank (score, singer, singer_id, singer_image) SELECT sum(score) as score, singer, singer_id, singer_image FROM music_rank_info group by singer_id order by sum(score) desc");
+        jdbcTemplate.execute("insert into album_rank (album, album_id, album_image, score, singer, singer_id) SELECT album, album_id, album_image, sum(score) as score, singer, singer_id FROM music_rank_info group by album_id order by sum(score) desc");
 
         return musics;
     }
@@ -133,11 +133,10 @@ public class MelonMusicHistoryParse {
         double powLeverage = 3;
         musicRankInfo.setScore((long) Math.pow(rankPoint, powLeverage));
 
-        List<MusicRankInfo> bySongIdAndYearAndMonth = musicRankInfoRepository.findBySongIdAndYearAndMonth(musicRankInfo.getSongId(), musicRankInfo.getYear(), musicRankInfo.getMonth());
-        if(bySongIdAndYearAndMonth.isEmpty()) {
-            musicRankInfoRepository.save(musicRankInfo);
-            logger.debug("insert music rank : " + musicRankInfo);
-        }
+
+        musicRankInfoRepository.save(musicRankInfo);
+        logger.debug("insert music rank : " + musicRankInfo);
+
 
         musics.add(musicRankInfo);
     }
