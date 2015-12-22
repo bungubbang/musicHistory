@@ -89,6 +89,36 @@ public class MusicApiController {
         return null;
     }
 
+    @RequestMapping(value = "rand", produces = "application/json", method = RequestMethod.GET)
+    public List<MusicRankInfo> randSong(@RequestParam Optional<Integer> rank) {
+        if(rank.isPresent()) {
+            return randMusic(randDate(), rank.get());
+        }
+        return randMusic(randDate(), 1);
+    }
+
+    private Integer randDate() {
+        int year = randBetween(2004, 2015);
+        int month = randBetween(1, 12);
+        return Integer.parseInt(String.valueOf(year) + String.valueOf(month));
+    }
+
+    private int randBetween(int start, int end) {
+        return start + (int)Math.round(Math.random() * (end - start));
+    }
+
+    private List<MusicRankInfo> randMusic(Integer randDate, Integer rank) {
+        MusicRankInfo randMusic = musicRankInfoRepository.findByRankDateAndRank(randDate, rank);
+        if(randMusic == null) {
+            return randMusic(randDate(), rank);
+        }
+        List<MusicRankInfo> musicRankInfos = new ArrayList<>();
+        musicRankInfos.add(randMusic);
+        musicRankInfos.add(musicRankInfoRepository.findByRankDateAndRank(randDate, rank + 1));
+        musicRankInfos.add(musicRankInfoRepository.findByRankDateAndRank(randDate, rank + 1));
+        return musicRankInfos;
+    }
+
 
 
 }
