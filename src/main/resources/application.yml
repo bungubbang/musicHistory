@@ -4,10 +4,11 @@ spring:
     show-sql: false
     database-platform: org.hibernate.dialect.MySQL5Dialect
   datasource:
-    url: jdbc:mysql://localhost:3306/musicHistory?useUnicode=true&connectionCollation=utf8_general_ci&characterSetResults=utf8&characterEncoding=utf8&?autoReconnect=true
+    url: jdbc:mysql://localhost:3306/musicHistory?useUnicode=true&connectionCollation=utf8_general_ci&characterSetResults=utf8&characterEncoding=utf8&autoReconnect=true
     username: root
     password:
     driver-class-name: com.mysql.jdbc.Driver
+    test-on-borrow: true
   mvc:
     favicon.enabled: false
 
@@ -16,6 +17,11 @@ spring:
 spring:
     profiles: real
     datasource:
-      url: jdbc:mysql://localhost:3306/musicdecade?useUnicode=true&connectionCollation=utf8_general_ci&characterSetResults=utf8&characterEncoding=utf8&?autoReconnect=true
+      url: jdbc:mysql://localhost:3306/musicdecade?useUnicode=true&connectionCollation=utf8_general_ci&characterSetResults=utf8&characterEncoding=utf8&autoReconnect=true
       username: musicdecade
       driver-class-name: com.mysql.jdbc.Driver
+      validation-query: SELECT 1
+      test-on-borrow: true
+      test-while-idle: true
+      initial-size: 10
+      min-idle: 1
